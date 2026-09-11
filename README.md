@@ -1,5 +1,7 @@
 # LANChatDemo — iOS + macOS
 
+<img src="scr.png">
+
 A minimal peer-to-peer-ish LAN chat where either an iPhone or a Mac can be the temporary server. The host advertises a Bonjour service; the QR code contains the Bonjour service identity rather than an IP address. The joining device scans it, browses Bonjour, resolves the endpoint, and connects over TCP using Network.framework.
 
 
