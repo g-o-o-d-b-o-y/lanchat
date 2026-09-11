@@ -11,6 +11,8 @@ struct ChatView: View {
     @FocusState private var composerFocused: Bool
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showFileImporter = false
+    @State private var showAttachOptions = false
+    @State private var showPhotoPicker = false
     @State private var previewMessage: ChatWireMessage?
 
     private var isHosting: Bool {
@@ -60,6 +62,16 @@ struct ChatView: View {
         ) { result in
             handleFileImporter(result)
         }
+        #if os(iOS)
+        .confirmationDialog("Attach", isPresented: $showAttachOptions, titleVisibility: .visible) {
+            Button("Photo or Video") { showPhotoPicker = true }
+            Button("File") { showFileImporter = true }
+            Button("Cancel", role: .cancel) {}
+        }
+        // Programmatic PhotosPicker presentation (the picker can't be
+        // embedded in menus/dialogs, so it lives here as a modifier).
+        .photosPicker(isPresented: $showPhotoPicker, selection: $pickedPhoto, matching: .any(of: [.images, .videos]))
+        #endif
         .onChange(of: pickedPhoto) { _, item in
             guard let item else { return }
             pickedPhoto = nil
@@ -237,24 +249,15 @@ struct ChatView: View {
 
     private var composer: some View {
         HStack(alignment: .bottom, spacing: 8) {
-            // PhotosPicker is a control that can't be embedded in a Menu on
-            // iOS — it must sit directly in the view hierarchy.
-            PhotosPicker(
-                selection: $pickedPhoto,
-                matching: .any(of: [.images, .videos])
-            ) {
-                Image(systemName: "photo")
-                    .font(.system(size: 17, weight: .medium))
-                    .frame(width: 40, height: 40)
-                    .background(.secondary.opacity(0.12), in: Circle())
-                    .contentShape(Circle())
-            }
-            .disabled(!isChatActive)
-            .opacity(isChatActive ? 1 : 0.35)
-            .help("Attach a photo or video")
-
+            // One unified attach button:
+            // - iOS: action sheet → "Photo or Video" (Photos picker) | "File"
+            // - macOS: the file open panel directly (covers files + images)
             Button {
+                #if os(iOS)
+                showAttachOptions = true
+                #else
                 showFileImporter = true
+                #endif
             } label: {
                 Image(systemName: "paperclip")
                     .font(.system(size: 17, weight: .medium))
@@ -265,7 +268,7 @@ struct ChatView: View {
             .buttonStyle(.plain)
             .disabled(!isChatActive)
             .opacity(isChatActive ? 1 : 0.35)
-            .help("Attach a document")
+            .help("Attach a photo, video, or document")
 
             TextField(composerPlaceholder, text: $draft, axis: .vertical)
                 .textFieldStyle(.plain)

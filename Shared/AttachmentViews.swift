@@ -73,13 +73,21 @@ struct AttachmentCardView: View {
                 image
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 240, maxHeight: 240)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .frame(maxWidth: 240, maxHeight: 300)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .strokeBorder(.separator.opacity(0.4), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .strokeBorder(.white.opacity(0.18), lineWidth: 1)
                     }
-                    .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay(alignment: .bottomTrailing) {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.caption2.weight(.bold))
+                            .padding(6)
+                            .background(.ultraThinMaterial, in: Circle())
+                            .padding(6)
+                    }
+                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
+                    .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .onTapGesture(perform: onOpen)
             } else {
                 Button(action: onOpen) {
@@ -125,12 +133,30 @@ struct AttachmentPreviewSheet: View {
                 if message.kind == .image,
                    let data = message.attachment?.data,
                    let image = Image(data: data) {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(.black)
-                        .ignoresSafeArea()
+                    ZStack {
+                        Color.black.ignoresSafeArea()
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.vertical, 8)
+                    }
+                    .overlay(alignment: .bottom) {
+                        if let attachment = message.attachment {
+                            VStack(spacing: 2) {
+                                Text(attachment.fileName)
+                                    .font(.caption.weight(.medium))
+                                    .foregroundStyle(.white.opacity(0.9))
+                                    .lineLimit(1)
+                                Text(attachment.sizeDescription)
+                                    .font(.caption2)
+                                    .foregroundStyle(.white.opacity(0.6))
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(.black.opacity(0.45), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .padding(.bottom, 12)
+                        }
+                    }
                 } else if let url = message.attachment?.temporaryFileURL() {
                     #if os(iOS)
                     QuickLookPreview(url: url)

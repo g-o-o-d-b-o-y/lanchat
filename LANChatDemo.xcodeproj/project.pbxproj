@@ -30,7 +30,7 @@
 /* Begin PBXFileReference section */
 		0F8D4C9E1C6A7BD42F21782F /* LANChat-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LANChat-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14B97A5FCC3513BE190095FE /* ChatProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatProtocol.swift; sourceTree = "<group>"; };
-		25921C5E5EF3413C109B190F /* LANChat-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "LANChat-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25921C5E5EF3413C109B190F /* LANChat-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LANChat-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		314749B943C22E49143EA555 /* IOSQRScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSQRScanner.swift; sourceTree = "<group>"; };
 		48D1DC1311A7DA8C8AD838AD /* LANChatIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LANChatIOSApp.swift; sourceTree = "<group>"; };
 		52BE04B2A487C536C4E007F6 /* ChatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStore.swift; sourceTree = "<group>"; };
@@ -140,8 +140,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 34127D038437B53E4A563C46 /* Build configuration list for PBXProject "LANChatDemo" */;
 			developmentRegion = en;
