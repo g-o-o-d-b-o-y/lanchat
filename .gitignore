@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Xcode user state (UI state, personal username paths)
+xcuserdata/
+*.xcuserstate
+
+# Build artifacts
+build/
+DerivedData/
+*.dSYM

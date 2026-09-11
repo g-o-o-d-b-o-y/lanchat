@@ -1,0 +1,75 @@
+name: LANChatDemo
+options:
+  bundleIdPrefix: com.lanchatdemo
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "14.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_PREVIEWS: YES
+
+targets:
+  LANChat-iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Shared
+      - path: iOS
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+    info:
+      path: Generated/Info-iOS.plist
+      properties:
+        CFBundleDisplayName: LAN Chat
+        NSCameraUsageDescription: Scan a LAN Chat QR code to connect to a nearby chat.
+        NSLocalNetworkUsageDescription: Find and connect to LAN Chat devices on your local Wi‑Fi network.
+        NSBonjourServices:
+          - _lanchat._tcp
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+
+  LANChat-macOS:
+    type: application
+    platform: macOS
+    sources:
+      - path: Shared
+      - path: macOS
+    info:
+      path: Generated/Info-macOS.plist
+      properties:
+        CFBundleDisplayName: LAN Chat
+        NSCameraUsageDescription: Scan a LAN Chat QR code to connect to a nearby chat.
+        NSLocalNetworkUsageDescription: Find and connect to LAN Chat devices on your local network.
+        NSBonjourServices:
+          - _lanchat._tcp
+    entitlements:
+      path: Generated/LANChat-macOS.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+        com.apple.security.device.camera: true
+
+schemes:
+  LANChat-iOS:
+    build:
+      targets:
+        LANChat-iOS: all
+    run:
+      config: Debug
+  LANChat-macOS:
+    build:
+      targets:
+        LANChat-macOS: all
+    run:
+      config: Debug
