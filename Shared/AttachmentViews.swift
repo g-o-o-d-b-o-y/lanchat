@@ -30,7 +30,11 @@ extension ChatWireMessage.Attachment {
     }
 
     var fileExtension: String {
-        UTType(mimeType: mimeType)?.preferredFilenameExtension ?? "bin"
+        // Trust the original file name over MIME mapping — MIME-to-UTType
+        // lookups for generic types (application/octet-stream, markdown…)
+        // produce nil/".bin" where the real extension is perfectly usable.
+        let ext = (fileName as NSString).pathExtension
+        return ext.isEmpty ? "bin" : ext
     }
 
     var iconName: String {

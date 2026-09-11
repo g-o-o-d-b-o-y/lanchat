@@ -237,27 +237,35 @@ struct ChatView: View {
 
     private var composer: some View {
         HStack(alignment: .bottom, spacing: 8) {
-            Menu {
-                PhotosPicker(
-                    selection: $pickedPhoto,
-                    matching: .any(of: [.images, .videos]),
-                    label: { Label("Photo or Video", systemImage: "photo.on.rectangle.angled") }
-                )
-                Button {
-                    showFileImporter = true
-                } label: {
-                    Label("Document…", systemImage: "folder")
-                }
+            // PhotosPicker is a control that can't be embedded in a Menu on
+            // iOS — it must sit directly in the view hierarchy.
+            PhotosPicker(
+                selection: $pickedPhoto,
+                matching: .any(of: [.images, .videos])
+            ) {
+                Image(systemName: "photo")
+                    .font(.system(size: 17, weight: .medium))
+                    .frame(width: 40, height: 40)
+                    .background(.secondary.opacity(0.12), in: Circle())
+                    .contentShape(Circle())
+            }
+            .disabled(!isChatActive)
+            .opacity(isChatActive ? 1 : 0.35)
+            .help("Attach a photo or video")
+
+            Button {
+                showFileImporter = true
             } label: {
                 Image(systemName: "paperclip")
                     .font(.system(size: 17, weight: .medium))
                     .frame(width: 40, height: 40)
+                    .background(.secondary.opacity(0.12), in: Circle())
                     .contentShape(Circle())
             }
             .buttonStyle(.plain)
             .disabled(!isChatActive)
             .opacity(isChatActive ? 1 : 0.35)
-            .help("Attach a photo, video, or document")
+            .help("Attach a document")
 
             TextField(composerPlaceholder, text: $draft, axis: .vertical)
                 .textFieldStyle(.plain)
